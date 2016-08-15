@@ -6,13 +6,13 @@ int A[2][2]={1,1,
 int y[2][2]={1,0,
 			 0,1};
 int NZero=1;
-int pow(int*,int,int);
+int pow(short*,int,int);
 void MatMul(int (&dest)[2][2],int mat[2][2],int m);
-void Divby2(int*,int);
+void Divby2(short*,int);
 using namespace std;
 int main(){
 	int m;
-	int n[1000000];
+	short n[1000000];
 	int nlen=0;
 	char temp;
 	for(int i=0;;i++){
@@ -32,7 +32,7 @@ int main(){
 	return 0;
 }
 
-int pow(int *n,int len,int m){
+int pow(short *n,int len,int m){
 	while(NZero!=1){
 		if(n[len-1]%2==1)
 		{
@@ -58,7 +58,7 @@ void MatMul(int (&dest)[2][2],int mat[2][2],int m){
 	dest[1][1]=temp[1][1]%m;
 }
 
-void Divby2(int *n,int len){
+void Divby2(short *n,int len){
 	int pcarry=0;
 	int carry;
 	int zero=1;
