@@ -11,7 +11,7 @@ int A[2][2]={1,1,
 int y[2][2]={1,0,
 			 0,1};
 int NZero=1;
-int pow(short*,int,int);
+int pow(bool*,int,int);
 void MatMul(int (&dest)[2][2],int mat[2][2],int m);
 void Divby2(short*,int);
 int start=0;
@@ -26,12 +26,15 @@ int main(int argc,char *argv[]){
 	f.open(argv[1],ios::in);
 	f>>cn;
 	stat(argv[1],&buffer1);
-	short n[buffer1.st_size];
+	bool n[buffer1.st_size];
 	for(int i=0;i<buffer1.st_size;i++){
 		if(cn[i]=='\0')
 			break;
 		else{
-			n[i]=cn[i]-'0';
+			if(cn[i]=='0')
+				n[i]=0;
+			else 
+				n[i]=1;
 			if(n[i]!=0)
 				NZero=0;
 			nlen++;
@@ -45,8 +48,8 @@ int main(int argc,char *argv[]){
 	return 0;
 }
 
-int pow(short *n,int len,int m){
-	while(NZero!=1){
+int pow(bool *n,int len,int m){
+	while(len-start>0){
 		if(n[len-1]%2==1)
 		{
 			MatMul(y,A,m);
@@ -54,7 +57,7 @@ int pow(short *n,int len,int m){
 		}
 		MatMul(A,A,m);
 		//cout<<"mul"<<" "<<A[0][0]<<A[0][1]<<A[1][0]<<A[1][1]<<"\n";
-		Divby2(n,len);
+		len--;//div by 2
 	}
 	return y[1][0];
 }
