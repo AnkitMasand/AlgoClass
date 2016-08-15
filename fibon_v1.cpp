@@ -1,0 +1,73 @@
+//Program to calculate F(n) for F(n)=(F(n-1)+F(n-2))mod m
+#include<iostream>
+#include<cstdio>
+int A[2][2]={1,1,
+			 1,0};
+int y[2][2]={1,0,
+			 0,1};
+int NZero=1;
+int pow(int*,int,int);
+void MatMul(int (&dest)[2][2],int mat[2][2],int m);
+void Divby2(int*,int);
+using namespace std;
+int main(){
+	int m;
+	int n[1000000];
+	int nlen=0;
+	char temp;
+	for(int i=0;;i++){
+		scanf("%c",&temp);
+		if(temp=='\n'){
+			break;
+		}
+		else{
+			nlen++;
+			n[i]=temp-'0';
+			if(n[i]!=0)
+				NZero=0;
+		}
+	}
+	cin>>m;
+	cout<<pow(n,nlen,m);
+	return 0;
+}
+
+int pow(int *n,int len,int m){
+	while(NZero!=1){
+		if(n[len-1]%2==1)
+		{
+			MatMul(y,A,m);
+			//cout<<"ymul"<<" "<<y[0][0]<<y[0][1]<<y[1][0]<<y[1][1]<<"\n";
+		}
+		MatMul(A,A,m);
+		//cout<<"mul"<<" "<<A[0][0]<<A[0][1]<<A[1][0]<<A[1][1]<<"\n";
+		Divby2(n,len);
+	}
+	return y[1][0];
+}
+
+void MatMul(int (&dest)[2][2],int mat[2][2],int m){
+	int temp[2][2];
+	temp[0][0]=(dest[0][0]*mat[0][0])+(dest[0][1]*mat[1][0]);	
+	temp[0][1]=(dest[0][0]*mat[0][1])+(dest[0][1]*mat[1][1]);
+	temp[1][0]=(dest[1][0]*mat[0][0])+(dest[1][1]*mat[1][0]);
+	temp[1][1]=(dest[1][0]*mat[0][1])+(dest[1][1]*mat[1][1]);
+	dest[0][0]=temp[0][0]%m;
+	dest[0][1]=temp[0][1]%m;
+	dest[1][0]=temp[1][0]%m;
+	dest[1][1]=temp[1][1]%m;
+}
+
+void Divby2(int *n,int len){
+	int pcarry=0;
+	int carry;
+	int zero=1;
+	for(int i=0;i<len;i++){
+		carry=((pcarry*10)+n[i])%2;
+		n[i]=((pcarry*10)+n[i])/2;
+		pcarry=carry;
+		if(n[i]!=0)
+			zero=0;
+	}
+	NZero=zero;
+}
