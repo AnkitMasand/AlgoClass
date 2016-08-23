@@ -18,27 +18,22 @@ int start=0;
 using namespace std;
 int main(int argc,char *argv[]){
 	int m;
-	char cn[1000100];
+	short n[1000100];
 	int nlen=0;
 	char temp;
-	ifstream f;
-	struct stat buffer1;
-	f.open(argv[1],ios::in);
-	f>>cn;
-	stat(argv[1],&buffer1);
-	short n[buffer1.st_size];
-	for(int i=0;i<buffer1.st_size;i++){
-		if(cn[i]=='\0')
+	for(int i=0;;i++){
+		scanf("%c",&temp);
+		if(temp=='\n')
 			break;
 		else{
-			n[i]=cn[i]-'0';
+			n[i]=temp-'0';
 			if(n[i]!=0)
 				NZero=0;
 			nlen++;
 		}
 	}
-	//cin>>m;
-	m=atoi(argv[2]);
+	cin>>m;
+	//m=atoi(argv[2]);
 	while(n[start]==0)
 		start++;
 	cout<<pow(n,nlen,m);

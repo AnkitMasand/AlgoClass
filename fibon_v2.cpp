@@ -13,7 +13,6 @@ int y[2][2]={1,0,
 int NZero=1;
 int pow(bool*,int,int);
 void MatMul(int (&dest)[2][2],int mat[2][2],int m);
-void Divby2(short*,int);
 int start=0;
 using namespace std;
 int main(int argc,char *argv[]){
@@ -74,20 +73,3 @@ void MatMul(int (&dest)[2][2],int mat[2][2],int m){
 	dest[1][1]=temp[1][1]%m;
 }
 
-void Divby2(short *n,int len){
-	int pcarry=0;
-	int carry;
-	int zero=1;
-	int d;
-	for(int i=start;i<len;i++){
-		d=(pcarry*10)+n[i];
-		carry=(d)%2;
-		n[i]=(d)/2;
-		pcarry=carry;
-		if(n[i]!=0)
-			zero=0;
-	}
-	if(n[start]==0)
-		start++;
-	NZero=zero;
-}
