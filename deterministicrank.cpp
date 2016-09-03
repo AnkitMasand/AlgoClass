@@ -35,8 +35,16 @@ int partition(int *A,int l,int r, int pi){
 		}
 		//cout<<"i:"<<i<<"j:"<<j<<endl;
 	}
-	swap(A[j+1],A[r]);
-	j++;
+	for(int l=0;l<len;l++)
+		cout<<A[l]<<" ";
+	cout<<"swapping j+1 and r:"<<j+1<<" "<<r<<endl;
+	if(A[j]>=p){
+		swap(A[j],A[r]);
+	}
+	else{
+		swap(A[j+1],A[r]);
+		j++;
+	}
 	/*if j has partition ensure the partition is the pivot element
 	if(j!=pivotindex && j!=r){
 		swap(A[j+1],A[pivotindex]);
@@ -121,7 +129,7 @@ int findRank(int *A,int i, int j, int r){
 		cout<<A[l]<<" ";
 	cout<<endl;
 	if(r==(j-k+1))
-		return p;
+		return k;
 	else if(r<(j-k+1))
 		return findRank(A,k+1,j,r);
 	else
