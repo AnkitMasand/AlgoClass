@@ -1,5 +1,6 @@
 //Program to calculate F(n) for F(n)=(F(n-1)+F(n-2))mod m
 #include<iostream>
+#include<cmath>
 #include<fstream>
 #include<cstring>
 #include<cstdio>
@@ -10,11 +11,13 @@ int A[2][2]={1,1,
 			 1,0};
 int y[2][2]={1,0,
 			 0,1};
-int NZero=1;
-int pow(short*,int,int);
+int NZero=1;	 //flag number is zero
+int pow(bool*,int,int);
 void MatMul(int (&dest)[2][2],int mat[2][2],int m);
-void Divby2(short*,int);
-int start=0;
+int Divby2(short*,int);
+void convert_to_bin(short*, int, bool*, int);
+int start=0;	//starting index of decimal number
+int bstart=0;	//starting index of binary number
 using namespace std;
 int main(int argc,char *argv[]){
 	int m;
@@ -41,20 +44,51 @@ int main(int argc,char *argv[]){
 	m=atoi(argv[2]);
 	while(n[start]==0)
 		start++;
-	cout<<pow(n,nlen,m);
+	int blen=0;	//length of the binary digit
+	int tdigits=nlen;
+	while(tdigits>0){
+		if(tdigits>=6)
+			blen+=ceil(log2(std::pow(10,6)));
+		else
+			blen+=ceil(log2(std::pow(10,tdigits)));
+		tdigits-=6;
+	}
+	cout<<blen;
+	bool nbin[blen];
+	convert_to_bin(n,nlen,nbin,blen);
+	char esc;
+	cin>>esc;
+	for(int i=bstart;i<blen;i++)
+		cout<<nbin[i];
+	cout<<endl;
+	cout<<pow(nbin,blen,m);
 	return 0;
 }
 
-int pow(short *n,int len,int m){
+void convert_to_bin(short *ndec,int nlen, bool *nbin, int blen){
+	int i=blen-1;
 	while(NZero!=1){
-		if(n[len-1]%2==1)
+		nbin[i]=Divby2(ndec,nlen);
+		i--;
+	}	
+	bstart=(i>0?i:0);
+	while(nbin[bstart]==0){
+		bstart++;
+	}
+}
+
+int pow(bool *n,int len,int m){
+	while(len-bstart >0){	//while number is greater than 0
+		//cout<<len<<"  "<<bstart<<endl;
+		if(n[len-1]==1)
 		{
 			MatMul(y,A,m);
-			cout<<"ymul"<<" "<<y[0][0]<<y[0][1]<<y[1][0]<<y[1][1]<<"\n";
+			//cout<<"ymul"<<" "<<y[0][0]<<y[0][1]<<y[1][0]<<y[1][1]<<"\n";
 		}
 		MatMul(A,A,m);
-		cout<<"mul"<<" "<<A[0][0]<<A[0][1]<<A[1][0]<<A[1][1]<<"\n";
-		Divby2(n,len);
+		//cout<<"mul"<<" "<<A[0][0]<<A[0][1]<<A[1][0]<<A[1][1]<<"\n";
+		//Divby2(n,len);
+		len--;
 	}
 	return y[1][0];
 }
@@ -71,7 +105,7 @@ void MatMul(int (&dest)[2][2],int mat[2][2],int m){
 	dest[1][1]=temp[1][1]%m;
 }
 
-void Divby2(short *n,int len){
+int Divby2(short *n,int len){
 	int pcarry=0;
 	int carry;
 	int zero=1;
@@ -87,4 +121,5 @@ void Divby2(short *n,int len){
 	if(n[start]==0)
 		start++;
 	NZero=zero;
+	return carry;
 }
