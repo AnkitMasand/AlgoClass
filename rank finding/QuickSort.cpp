@@ -30,7 +30,7 @@ void QuickSort(int *A,int l,int r){
 	if(l>=r)
 		return;
 	int p=A[l + (rand()%(r-l+1))];
-	cout<<"pivot:"<<p<<endl;
+	//cout<<"pivot:"<<p<<endl;
 	int k=partition(A,l,r,p);
 	if(k==r){ 	//check if all elements same!
 		int flag=0;
@@ -40,9 +40,9 @@ void QuickSort(int *A,int l,int r){
 		if(flag==0)
 			return;
 	}
-	cout<<"after partition:"<<l<<" "<<r<<endl;
-	for(int i=0;i<len;i++)
-		cout<<A[i]<<" ";
+	//cout<<"after partition:"<<l<<" "<<r<<endl;
+	/*for(int i=0;i<len;i++)
+		cout<<A[i]<<" ";*/
 	QuickSort(A,l,k);
 	QuickSort(A,k+1,r);
 }

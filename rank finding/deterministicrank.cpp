@@ -35,9 +35,9 @@ int partition(int *A,int l,int r, int pi){
 		}
 		//cout<<"i:"<<i<<"j:"<<j<<endl;
 	}
-	for(int l=0;l<len;l++)
+	/*for(int l=0;l<len;l++)
 		cout<<A[l]<<" ";
-	cout<<"swapping j+1 and r:"<<j+1<<" "<<r<<endl;
+	cout<<"swapping j+1 and r:"<<j+1<<" "<<r<<endl;*/
 	if(A[j]>=p){
 		swap(A[j],A[r]);
 	}
@@ -62,9 +62,9 @@ int median(int *A,int i,int j){
 }
 void bubblesort(int *A,int i,int j){
 	int sorted=0;
-	cout<<"before sort"<<i<<j<<endl;
+	/*cout<<"before sort"<<i<<j<<endl;
 	for(int r=i;r<=j;r++)
-		cout<<A[r]<<" ";
+		cout<<A[r]<<" ";*/
 	for(int q=i;q<=j& sorted==0;q++)
 	{
 		sorted=1;
@@ -76,10 +76,10 @@ void bubblesort(int *A,int i,int j){
 			}	
 		}
 	}
-	cout<<"after sort"<<endl;
+	/*cout<<"after sort"<<endl;
 	for(int r=i;r<=j;r++)
 		cout<<A[r]<<" ";
-	cout<<flush;
+	cout<<flush;*/
 }
 int goodPivot(int *A,int i,int j){
 	//bubblesort 5 elements ie n/5 partitions
@@ -90,14 +90,14 @@ int goodPivot(int *A,int i,int j){
 	int ptr=i;
 	int endptr=i+4;//5 elems..this would be accessd
 	while(endptr<=j){
-		cout<<"doing bubblesort from "<<ptr<<" to"<<endptr<<endl;
+		//cout<<"doing bubblesort from "<<ptr<<" to"<<endptr<<endl;
 		bubblesort(A,ptr,endptr);
 		ptr+=5;
 		if(j-endptr>0 && j-endptr<5)
 			endptr=j;
 		else
 			endptr+=5;
-		cout<<endptr<<flush;
+		//cout<<endptr<<flush;
 	}
 	int index=i;
 	int median_index;
@@ -113,21 +113,21 @@ int goodPivot(int *A,int i,int j){
 			endptr+=5;
 		index++;
 	}
-	cout<<"rray:"<<endl;
+	/*cout<<"rray:"<<endl;
 	for(int q=0;q<len;q++)
 		cout<<A[q]<<" ";
-	cout<<"index"<<index<<endl;
+	cout<<"index"<<index<<endl;*/
 	return goodPivot(A,i,index-1);
 }
 int findRank(int *A,int i, int j, int r){
 	//pivot is passed as index of the element only!
 	int p=goodPivot(A,i,j);	//deterministic pivot selection 
-	cout<<"pivot:"<<p<<endl;
+	//cout<<"pivot:"<<p<<endl;
 	int k=partition(A,i,j,p);
-	cout<<"partition:"<<k<<"i:"<<i<<"j:"<<j<<"r:"<<r<<endl;
-	for(int l=0;l<len;l++)
-		cout<<A[l]<<" ";
-	cout<<endl;
+	//cout<<"partition:"<<k<<"i:"<<i<<"j:"<<j<<"r:"<<r<<endl;
+	//for(int l=0;l<len;l++)
+	//	cout<<A[l]<<" ";
+	//cout<<endl;
 	if(r==(j-k+1))
 		return k;
 	else if(r<(j-k+1))
@@ -148,6 +148,6 @@ int main(){
 	{
 		cin>>rank;
 		ele=A[findRank(A,0,len-1,rank)];
-		cout<<ele<<endl;
+		cout<<ele<<" ";
 	}
 }

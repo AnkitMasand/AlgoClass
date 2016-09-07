@@ -22,9 +22,9 @@ int partition(int *A,int l,int r, int pi){
 			i++; j--;
 		}
 	}
-	for(int l=0;l<len;l++)
+	/*for(int l=0;l<len;l++)
 		cout<<A[l]<<" ";
-	cout<<"swapping j+1 and r:"<<j+1<<" "<<r<<endl;
+	cout<<"swapping j+1 and r:"<<j+1<<" "<<r<<endl;*/
 	if(A[j]>=p){
 		swap(A[j],A[r]);
 	}
@@ -38,12 +38,12 @@ int partition(int *A,int l,int r, int pi){
 int findRank(int *A,int i, int j, int r){
 	//pivot is passed as index of the element only!
 	int p=i + (rand()%(j-i+1));	//deterministic pivot selection 
-	cout<<"pivot:"<<p<<endl;
+	//cout<<"pivot:"<<p<<endl;
 	int k=partition(A,i,j,p);
-	cout<<"partition:"<<k<<"i:"<<i<<"j:"<<j<<"r:"<<r<<endl;
-	for(int l=0;l<len;l++)
-		cout<<A[l]<<" ";
-	cout<<endl;
+	//cout<<"partition:"<<k<<"i:"<<i<<"j:"<<j<<"r:"<<r<<endl;
+	//for(int l=0;l<len;l++)
+	//	cout<<A[l]<<" ";
+	//cout<<endl;
 	if(r==(j-k+1))
 		return k;
 	else if(r<(j-k+1))
@@ -64,6 +64,6 @@ int main(){
 	{
 		cin>>rank;
 		ele=A[findRank(A,0,len-1,rank)];
-		cout<<ele<<endl;
+		cout<<ele<<" ";
 	}
 }
