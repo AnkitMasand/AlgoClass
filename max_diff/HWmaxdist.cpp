@@ -2,8 +2,9 @@
 #include<iostream>
 #include<deque>
 using namespace std;
-//Requires two deques -  one for max element in the window
-//other for min element.
+//Requires deque to maintain minimum element in window
+//Every new j checkd against the minimum element which is in scope -  
+//it would be to left of j as j is new. Keep track of max diff
 int main(){
 	int len,l;
 	cin>>len>>l;
@@ -13,18 +14,8 @@ int main(){
 	deque<int> MinQ;	//deque of indices
 	int i=0;
 	int max=A[1]-A[0];
-	/*while(i<l){
-		if(!MinQ.empty() && A[i]<=MinQ[back]{
-			MinQ.pop_back();
-		}
-		MinQ.push_back(i);
-		i++;
-	}*/
-	
 	while(i<len)
 	{
-		//if((i-l)>=0)
-		//	cout<<A[MinQ.front()]<<" ";
 		while(!MinQ.empty() && A[i]<=A[MinQ.back()]){
 			MinQ.pop_back();
 		}
