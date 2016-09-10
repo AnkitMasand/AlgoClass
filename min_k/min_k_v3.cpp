@@ -1,3 +1,8 @@
+//Program to find min k elements given n numbers.
+//Uses random partition and also for each iteration when partitioned to right
+//of k, finds rank for n1-k and substitutes n1-k elements and reiterates.
+//
+//Method to run: similar as earlier version
 #include<iostream>
 #include<cstdio>
 #include<cstdlib>

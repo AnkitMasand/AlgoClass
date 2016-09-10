@@ -1,3 +1,14 @@
+//Program to calculate number with given rank from an array of numbers n
+//using random deterministic approach to find good pivot and 
+//subsequent partition
+//
+//./deterministicrank < randip1/2/3/4/5
+//Generate the input file for IOredirection using rand_ip
+//The input should be of format:-
+//no of elements in array
+//The elements of array
+//No of elements whose ranks are to be calculate
+//the ranks for which corresponding elements are to be searched
 #include<iostream>
 #include<cstdio>
 #include<cstdlib>
@@ -5,11 +16,6 @@
 #define MAXLEN 1000000
 int len;
 using namespace std;
-/*void swap(int &no1,int &no2){
-	no1=no1+no2;
-	no2=no1-no2;
-	no1=no1-no2;
-}*/
 int partition(int *A,int l,int r, int pi){
 	int i=l;
 	int p=A[pi];	//pivot p is at pivtindex
@@ -21,23 +27,11 @@ int partition(int *A,int l,int r, int pi){
 			i++;
 		while(A[j]>=p)
 			j--;
-		/*if(A[i]==p)
-			pivotindex=i;
-		if(A[j]==p)
-			pivotindex=j;*/
 		if(i<j){
-			//cout<<"swapping "<<A[i]<<" "<<A[j]<<endl;
-			/*A[i]+=A[j];
-			A[j]=A[i]-A[j];
-			A[i]=A[i]-A[j];*/
 			swap(A[i],A[j]);
 			i++; j--;
 		}
-		//cout<<"i:"<<i<<"j:"<<j<<endl;
 	}
-	/*for(int l=0;l<len;l++)
-		cout<<A[l]<<" ";
-	cout<<"swapping j+1 and r:"<<j+1<<" "<<r<<endl;*/
 	if(A[j]>=p){
 		swap(A[j],A[r]);
 	}
@@ -45,14 +39,6 @@ int partition(int *A,int l,int r, int pi){
 		swap(A[j+1],A[r]);
 		j++;
 	}
-	/*if j has partition ensure the partition is the pivot element
-	if(j!=pivotindex && j!=r){
-		swap(A[j+1],A[pivotindex]);
-		j++;
-	}
-	else if(j!=pivotindex && j==r){
-		swap(A[j],A[pivotindex]);
-	}*/
 	return j;
 }
 int median(int *A,int i,int j){
@@ -62,9 +48,6 @@ int median(int *A,int i,int j){
 }
 void bubblesort(int *A,int i,int j){
 	int sorted=0;
-	/*cout<<"before sort"<<i<<j<<endl;
-	for(int r=i;r<=j;r++)
-		cout<<A[r]<<" ";*/
 	for(int q=i;q<=j& sorted==0;q++)
 	{
 		sorted=1;
@@ -76,10 +59,6 @@ void bubblesort(int *A,int i,int j){
 			}	
 		}
 	}
-	/*cout<<"after sort"<<endl;
-	for(int r=i;r<=j;r++)
-		cout<<A[r]<<" ";
-	cout<<flush;*/
 }
 int goodPivot(int *A,int i,int j){
 	//bubblesort 5 elements ie n/5 partitions
@@ -90,14 +69,12 @@ int goodPivot(int *A,int i,int j){
 	int ptr=i;
 	int endptr=i+4;//5 elems..this would be accessd
 	while(endptr<=j){
-		//cout<<"doing bubblesort from "<<ptr<<" to"<<endptr<<endl;
 		bubblesort(A,ptr,endptr);
 		ptr+=5;
 		if(j-endptr>0 && j-endptr<5)
 			endptr=j;
 		else
 			endptr+=5;
-		//cout<<endptr<<flush;
 	}
 	int index=i;
 	int median_index;
@@ -113,21 +90,12 @@ int goodPivot(int *A,int i,int j){
 			endptr+=5;
 		index++;
 	}
-	/*cout<<"rray:"<<endl;
-	for(int q=0;q<len;q++)
-		cout<<A[q]<<" ";
-	cout<<"index"<<index<<endl;*/
 	return goodPivot(A,i,index-1);
 }
 int findRank(int *A,int i, int j, int r){
 	//pivot is passed as index of the element only!
 	int p=goodPivot(A,i,j);	//deterministic pivot selection 
-	//cout<<"pivot:"<<p<<endl;
 	int k=partition(A,i,j,p);
-	//cout<<"partition:"<<k<<"i:"<<i<<"j:"<<j<<"r:"<<r<<endl;
-	//for(int l=0;l<len;l++)
-	//	cout<<A[l]<<" ";
-	//cout<<endl;
 	if(r==(j-k+1))
 		return k;
 	else if(r<(j-k+1))

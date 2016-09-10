@@ -1,4 +1,6 @@
 //Program to calculate F(n) for F(n)=(F(n-1)+F(n-2))mod m
+//./fibon_v3 {input file with n as decimal no} {m}
+//Uses decimal to binary conversion
 #include<iostream>
 #include<cmath>
 #include<fstream>

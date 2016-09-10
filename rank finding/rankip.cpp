@@ -1,3 +1,5 @@
+//Program to generate input file for rank finding problem
+//./randip {no of elements in array} {number of ranks} > randip1/2/3/4/5
 #include<iostream>
 #include<cstdlib>
 using namespace std;

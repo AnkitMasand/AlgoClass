@@ -1,3 +1,7 @@
+//Program to calculate minimum k elements from a given array having n elements.
+//This version uses heap to solve the problem. Max heap of size k is 
+//constructed and maintained and new elements scanned if smaller than maximum
+//element are inserted into heap and max is deleted.
 #include<iostream>
 #include<fstream>
 #include "heap.h"

@@ -1,3 +1,5 @@
+//Program to generate random input for min_k problems:
+//Run using ./rand_ip {n} {k} > randip1/2/3/4/5...
 #include<iostream>
 #include<cstdlib>
 using namespace std;

@@ -1,4 +1,6 @@
 //Program to calculate F(n) for F(n)=(F(n-1)+F(n-2))mod m
+//Uses fact that above function is periodic
+//./fibon_v5 {input file havin n} {m}
 #include<iostream>
 #include<fstream>
 #include<cstring>

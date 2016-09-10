@@ -1,3 +1,11 @@
+//Program to find min k elements given n numbers
+//This approach is the version 3 only, but it has the findrank function called
+//only once-i.e. at the end to segregate k smallest nos.
+//For all other iterations, random pivot chosen and partitioned, if partition 
+//is to right of k, then replace all elements to right of partition by next
+//input numbers.
+//
+//Input taken from stdin. use ioredirection for huge files
 #include<iostream>
 #include<cstdio>
 #include<cstdlib>

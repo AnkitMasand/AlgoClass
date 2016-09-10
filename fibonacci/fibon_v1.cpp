@@ -1,4 +1,9 @@
 //Program to calculate F(n) for F(n)=(F(n-1)+F(n-2))mod m
+//Version 1 uses decimal input and divide by 2 function
+//
+//Method to run the program:
+//./fibon_v1 {input_file} {m}
+//input file shud first directly have the number n
 #include<iostream>
 #include<fstream>
 #include<cstring>

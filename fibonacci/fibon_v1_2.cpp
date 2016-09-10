@@ -1,4 +1,6 @@
 //Program to calculate F(n) for F(n)=(F(n-1)+F(n-2))mod m
+//Version 1 only, but requires IOredirection for input rather than a separate
+//file specifying n and m passed as parameter as in prog fibon_v1.cpp
 #include<iostream>
 #include<fstream>
 #include<cstring>

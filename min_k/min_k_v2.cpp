@@ -1,3 +1,10 @@
+//Program to calculate minimum k elements given n numbers.
+//This version uses deterministic pivot to divide array of 2*k into k size and
+//then reiterate after adding next k elements.
+//
+//Method to run:
+//./min_k_v2 < randip1/2/3/4
+//Generate the random input using ./rand_ip {n} {k} > randip1/2/3/4
 #include<iostream>
 #include<cstdio>
 #include<cstdlib>

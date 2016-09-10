@@ -1,3 +1,13 @@
+//Program to calculate number with given rank from an array of numbers n
+//using random pivot and subsequent partition
+//
+//./randrank < randip1/2/3/4/5
+//Generate the input file for IOredirection using rand_ip
+//The input should be of format:-
+//no of elements in array
+//The elements of array
+//No of elements whose ranks are to be calculate
+//the ranks for which corresponding elements are to be searched
 #include<iostream>
 #include<cstdio>
 #include<cstdlib>
@@ -22,9 +32,6 @@ int partition(int *A,int l,int r, int pi){
 			i++; j--;
 		}
 	}
-	/*for(int l=0;l<len;l++)
-		cout<<A[l]<<" ";
-	cout<<"swapping j+1 and r:"<<j+1<<" "<<r<<endl;*/
 	if(A[j]>=p){
 		swap(A[j],A[r]);
 	}
@@ -37,13 +44,8 @@ int partition(int *A,int l,int r, int pi){
 
 int findRank(int *A,int i, int j, int r){
 	//pivot is passed as index of the element only!
-	int p=i + (rand()%(j-i+1));	//deterministic pivot selection 
-	//cout<<"pivot:"<<p<<endl;
+	int p=i + (rand()%(j-i+1));	 
 	int k=partition(A,i,j,p);
-	//cout<<"partition:"<<k<<"i:"<<i<<"j:"<<j<<"r:"<<r<<endl;
-	//for(int l=0;l<len;l++)
-	//	cout<<A[l]<<" ";
-	//cout<<endl;
 	if(r==(j-k+1))
 		return k;
 	else if(r<(j-k+1))

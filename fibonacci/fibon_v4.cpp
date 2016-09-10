@@ -1,4 +1,6 @@
 //Program to calculate F(n) for F(n)=(F(n-1)+F(n-2))mod m
+//./fibon_v4 {input_file} {m}
+//modified alo for decimal - divide by 10
 #include<iostream>
 #include<fstream>
 #include<cstring>
