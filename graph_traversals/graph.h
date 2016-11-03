@@ -29,5 +29,5 @@ class Graph{
 		void construct();
 		void display();
 };
-
+#endif
 
