@@ -95,12 +95,16 @@ void RBTree::insert_n(int val){
 		Node *prev_gp=grandparent(r);
 		if(prev_gp->parent!=NULL && prev_gp->parent->right==prev_gp)
 		{
-			prev_gp->parent->right=doublered(r);
-			r=prev_gp->parent->right;
+			prev_gp=prev_gp->parent;
+			prev_gp->right=doublered(r);
+			cout<<prev_gp->label<<"great gp"<<endl;
+			r=prev_gp->right;
 		}
 		else if(prev_gp->parent!=NULL)
 		{
-			prev_gp->parent->left=doublered(r);
+			prev_gp=prev_gp->parent;
+			prev_gp->left=doublered(r);
+			cout<<prev_gp->label<<"great gp"<<endl;
 			r=prev_gp->parent->left;
 		}
 		else
@@ -162,7 +166,7 @@ Node* RBTree::doublered(Node *X){
 		return X->parent;
 	}*/
 	if(u==NULL || u->color==BLACK){
-		if(X->parent->right==X){
+		if(X->parent->right==X && g->left==X->parent){
 			//ZIG ZAG
 			X->parent->right=X->left;
 			g->left=X->right;
@@ -177,11 +181,36 @@ Node* RBTree::doublered(Node *X){
 			cout<<X->label<<" "<<X->left->label<<" "<<X->right->label<<endl;
 			return X;			
 		}
-		else{
+		else if(X->parent->left==X && g->right==X->parent){
+			//ZIG ZAG
+			X->parent->left=X->right;
+			g->right=X->left;
+			X->right=X->parent;
+			X->left=g;
+			X->parent->parent=X;
+			X->parent=g->parent;
+			g->parent=X;
+			X->color=BLACK;
+			X->right->color=RED;
+			X->left->color=RED;
+			cout<<X->label<<" "<<X->left->label<<" "<<X->right->label<<endl;
+			return X;			
+		}
+		else if(g->left==X->parent){
 			//ZIG ZIG
 			g->left=X->parent->right;
 			X->parent->parent=g->parent;
 			X->parent->right=g;
+			g->parent=X->parent;
+			X->parent->color=BLACK;
+			g->color=RED;
+			return X->parent;
+		}
+		else if(g->right==X->parent){
+			//ZIG ZIG
+			g->right=X->parent->left;
+			X->parent->parent=g->parent;
+			X->parent->left=g;
 			g->parent=X->parent;
 			X->parent->color=BLACK;
 			g->color=RED;
