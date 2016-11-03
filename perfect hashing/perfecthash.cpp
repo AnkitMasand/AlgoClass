@@ -2,22 +2,23 @@
 #include<vector>
 #include<cstdlib>
 #include<fstream>
+#include<string>
 #define MIN -999999
-#define SIZE 50
+#define SIZE 1502
 
 using namespace std;
 
-int hash(long long int e, int a,int b, int p,int m){
+int hashh(long long int e, int a,int b, int p,int m){
 	long long int x= (a*e)+b;
 	x=x%p;
 	return (int)x%m;
 }
 
-//Bucket class for each bucket in the primary hash table
+//Bucket class for each bucket in the primary hashh table
 class Bucket{
 	int a;
 	int b;
-	int m;	//size of sec hash
+	int m;	//size of sec hashh
 	int prime;
 	vector<long long int> sec;
    public:
@@ -49,7 +50,7 @@ class Table{
 			b=rand()%prime_p;
 		size=SIZE;	
 	}
-	void add(long long int *ele,int n);
+	void add(char *filenm,int n);
 	void display();
 };
 
@@ -57,31 +58,37 @@ void Bucket::add(vector<long long int> &ele, int len){
 	m=len*len;
 	sec.clear();
 	sec.assign(m,MIN);	
-	int hash_key,flag=0;// flag 0 for starting for loop
-	rehash:
+	int hashh_key,flag=0;// flag 0 for starting for loop
+	rehashh:
 	for(int i=0;i<len;i++){
 		flag=1;
-		hash_key=hash(ele[i],a,b,prime,m);
-		if(sec[hash_key]!=MIN)
+		hashh_key=hashh(ele[i],a,b,prime,m);
+		if(sec[hashh_key]!=MIN)
 		{
 			a=rand()%prime;
 			while(b==a)
 				b=rand()%prime;
 			sec.clear();
 			sec.assign(m,MIN);
-			goto rehash;
+			goto rehashh;
 		}
-		sec[hash_key]=ele[i];	
+		sec[hashh_key]=ele[i];	
 	}	
 }
 
-void Table::add(long long int *ele,int n){
-	//first primary hash into arrays then verify function
+void Table::add(char *filenm,int n){
+	fstream fp(filenm,ios::in);
+	//first primary hashh into arrays then verify function
 	vector< vector<long long int> > eles (size,vector<long long int>());
-	int hash_key,flag=1;
+	int hashh_key,flag=1;
+	long long int ele;
+	string str;
 	for(int i=0;i<n;i++){
-		hash_key=hash(ele[i],a,b,prime_p,size);
-		eles[hash_key].push_back(ele[i]);
+		fp>>str;
+		cout<<str;
+		ele=stoll(str);		
+		hashh_key=hashh(ele,a,b,prime_p,size);
+		eles[hashh_key].push_back(ele);
 	}
 	for(int i=0;i<n;i++)
 	{
@@ -95,7 +102,8 @@ void Table::add(long long int *ele,int n){
 		a=rand()%prime_p;
 		while(b==a)
 			b=rand()%prime_p;
-		add(ele,n);
+		fp.close();
+		add(filenm,n);
 		return;	
 	}
 	else{
@@ -104,6 +112,7 @@ void Table::add(long long int *ele,int n){
 			pri[i].add(eles[i],eles[i].size());
 		}			
 	}
+	fp.close();
 }
 
 void Bucket::display(){
@@ -123,12 +132,7 @@ void Table::display(){
 int main(int argc, char *argv[]){
 	Table T;
 	int no_of_elems;
-	cin>>no_of_elems;
-	long long int ele[no_of_elems];
-	for(int i=0;i<no_of_elems;i++)
-	{
-		cin>>ele[i];
-	}
-	T.add(ele,no_of_elems);
+	no_of_elems=atoi(argv[1]);
+	T.add(argv[2],no_of_elems);
 	T.display();
 }
