@@ -27,13 +27,11 @@ class RBTree{
 		root=NULL;
 	}
 	void search(int);
-	Node* insert(Node*,int);
 	Node* grandparent(Node *c);
 	Node* sibling(Node *c);
 	Node* uncle(Node *c);
 	Node* doublered(Node *c);
 	void levelorder();
-	void insertt(int);
 	void insert_n(int);
 	void del(int);
 	void del(Node*);
@@ -94,11 +92,6 @@ Node* RBTree::uncle(Node *c){
 	else
 		return g->left;
 }
-/*
-void RBTree::insertt(int val){
-	root=insert(root,val);
-}
-*/
 void RBTree::insert_n(int val){
 	Node *r=root;
 	Node *p=r;
@@ -136,7 +129,7 @@ void RBTree::insert_n(int val){
 			prev_gp=prev_gp->parent;
 			prev_gp->left=doublered(r);
 			cout<<prev_gp->label<<"great gp"<<endl;
-			r=prev_gp->parent->left;
+			r=prev_gp->left;
 		}
 		else
 		{
@@ -180,6 +173,7 @@ void RBTree::del(int val){
 			while(x->right!=NULL){
 				x=x->right;
 			}
+			cout<<"elem changedd to :"<<x->label<<endl;
 			r->label=x->label;
 			del(x);
 		}
@@ -205,6 +199,10 @@ void RBTree::del(Node *c){
 	if(c->right==c->left){
 		if(c->color==RED)
 		{	
+			if(c->parent->left==c)
+				c->parent->left=NULL;
+			else
+				c->parent->right=NULL;			
 			delete c;
 			return;
 		}	
@@ -417,39 +415,7 @@ void RBTree::doubleblack(Node *x, Node *p, Node *s){
 	return;
 }
 
-/*
-Node* RBTree::insert(Node *r,int val){
-	Node c(val);
-	if(r==NULL){
-		r=new Node(val);
-		return r;
-	}
-	if(r->label < val){
-		Node *n=insert(r->right,val);
-		n->parent=r;
-		r->right=n;
-		cout<<n->color<<" "<<r->color<<endl;
-		if(r->color==n->color && r->color==RED){
-			r=doublered(n);
-			//r=r->right;
-		}
-		return r;	
-	}	
-	if(r->label >= val){
-		Node *n=insert(r->left,val);
-		n->parent=r;
-		r->left=n;
-		cout<<n->color<<" "<<r->color<<endl;
-		if(r->color==n->color && r->color==RED){
-			r=doublered(n);
-			//r=r->left;
-		}
-		return r;
-	}
-}
-*/
 Node* RBTree::doublered(Node *X){
-	//cout<<"double red :"<<endl;
 	//To return the grandparent to X after rotations
 	Node *u=uncle(X);
 	Node *g=grandparent(X);
