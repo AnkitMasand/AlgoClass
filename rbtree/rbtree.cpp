@@ -28,13 +28,15 @@ class RBTree{
 	}
 	Node* insert(Node*,int);
 	Node* grandparent(Node *c);
-	//Node* sibling(Node *c);
+	Node* sibling(Node *c);
 	Node* uncle(Node *c);
 	Node* doublered(Node *c);
 	void levelorder();
 	void insertt(int);
 	void insert_n(int);
 	void del(int);
+	void del(Node*);
+	Node* doubleblack(Node*,Node*,Node*);
 };
 
 void RBTree::levelorder(){
@@ -54,6 +56,13 @@ void RBTree::levelorder(){
 
 Node* RBTree::grandparent(Node *c){
 	return c->parent->parent;
+}
+
+Node* RBTree::sibling(Node *c){
+	if(c->parent->left==c)
+		return c->parent->right;
+	else
+		return c->parent->left;
 }
 
 Node* RBTree::uncle(Node *c){
@@ -113,15 +122,193 @@ void RBTree::insert_n(int val){
 			root->color=BLACK;
 			break;
 		}
-		/*if(r->parent==NULL)
-		{
-			root=r;
-			root->color=BLACK;
-			cout<<"Root is:"<<root->label<<endl;
-			break;
-		}*/
 	}
 }
+
+void RBTree::del(int val){
+	Node *r=root;
+	Node *x;
+	while(r!=NULL){
+		if(r->label > val){
+			r=r->right;
+		}
+		else if(r->label < val){
+			r=r->left;
+		}
+		else{
+			break;	
+		}
+	}
+	if(r==NULL){
+		cout<<"Element not found!"<<endl;
+		return;
+	}
+	else{
+		if(r->left==r->right)
+		{
+			del(r);	 //case 0
+		}
+		else if(r->left==NULL || r->right==NULL){
+			del(r);	//case 1
+		}	
+		else{
+			//Both child exist case 3
+			//inord predeccsor:
+			x=r->left;
+			while(x->right!=NULL){
+				x=x->left;
+			}
+			r->label=x->label;
+			del(x);
+		}
+	}
+}
+
+void RBTree::del(Node *c){
+	if(c==root){
+		if(root->left!=NULL)
+			root=root->left;
+		else if(root->right!=NULL)
+			root=root->right;
+		else{
+			root=NULL;
+			return;
+		}
+		root->color=BLACK;
+		return;
+	}
+	//here onwards, parent exists.
+	Node *s=sibling(c);
+	Node *g=grandparent(c);
+	if(c->right==c->left){
+		if(c->color==RED)
+		{	
+			delete c;
+			return;
+		}	
+		else{
+			if(g==NULL){
+				root=doubleblack(c->right,c->parent,s);
+				delete c;
+				return;
+			}
+			else{
+				if(g->left==c->parent)
+					g->left=doubleblack(c->right,c->parent,s);
+				else
+					g->right=doubleblack(c->right,c->parent,s);
+				delete c;
+				return;
+			}
+		}
+	}
+	else{
+		if(c->color==RED){
+			//No double black needed
+			if(c->left!=NULL){
+				c->left->parent=c->parent;
+				if(c->parent->left==c)
+					c->parent->left=c->left;
+				else
+					c->parent->right=c->left;
+				delete c;
+				return;
+			}
+			if(c->right!=NULL){
+				c->right->parent=c->parent;
+				if(c->parent->left==c)
+					c->parent->left=c->right;
+				else
+					c->parent->right=c->right;
+				delete c;
+				return;
+			}
+		}
+		else if(c->left!=NULL && c->left->color==RED){
+			c->left->parent=c->parent;
+			if(c->parent->left==c)
+				c->parent->left=c->left;
+			else
+				c->parent->right=c->left;
+			c->left->color=BLACK;
+			delete c;
+			return;
+		}
+		else if(c->right!=NULL && c->right->color==RED){
+			c->right->parent=c->parent;
+			if(c->parent->left==c)
+				c->parent->left=c->right;
+			else
+				c->parent->right=c->right;
+			c->right->color=BLACK;
+			delete c;
+			return;
+		}
+		else{
+			//Need to call double black
+			Node *x;
+			if(c->right!=NULL)	
+				x=c->right;
+			else
+				x=c->left;
+			if(g==NULL){
+				root=doubleblack(x,c->parent,s);
+				delete c;
+				return;
+			}
+			else{
+				if(g->left==c->parent)
+					g->left=doubleblack(x,c->parent,s);
+				else
+					g->right=doubleblack(x,c->parent,s);
+				delete c;
+				return;
+			}
+		}
+	}
+}
+//As double black prob is coz c was black, so even u has to exist as if it 
+//does not exist, black height will not be balanced.
+Node* RBTree::doubleblack(Node *x, Node *p, Node *s){
+	if(s->color==RED)	//case 1
+	{
+		//both children black of uncle have to exist
+		if(p->right==s){
+			p->right=s->left;
+			s->left=p;
+			p->right->parent=p;
+			p->parent=s;
+			s->color=BLACK;
+			s->left=doubleblack(x,p,p->right);
+			return s;
+		}
+		else if(p->left==s){
+			p->left=s->right;
+			s->right=p;
+			p->left->parent=p;
+			p->parent=s;
+			s->color=BLACK;
+			s->right=doubleblack(x,p,p->left);
+			return s;
+		}
+	}	
+	else if(s->color==BLACK){
+		if(s->right==s->left)	//no child to sibling
+		{
+			if(x!=NULL)
+				x->color=BLACK;
+			s->color=RED;
+			if(p->color==BLACK){
+				if(grandparent(p)==NULL)
+					return doubleblack(p,p->parent,sibling(p));
+				else
+				
+			}
+		}
+	}
+	return p;
+}
+
 /*
 Node* RBTree::insert(Node *r,int val){
 	Node c(val);
