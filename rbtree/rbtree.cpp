@@ -36,7 +36,7 @@ class RBTree{
 	void insert_n(int);
 	void del(int);
 	void del(Node*);
-	Node* doubleblack(Node*,Node*,Node*);
+	void doubleblack(Node*,Node*,Node*);
 };
 
 void RBTree::levelorder(){
@@ -130,10 +130,10 @@ void RBTree::del(int val){
 	Node *x;
 	while(r!=NULL){
 		if(r->label > val){
-			r=r->right;
+			r=r->left;
 		}
 		else if(r->label < val){
-			r=r->left;
+			r=r->right;
 		}
 		else{
 			break;	
@@ -156,7 +156,7 @@ void RBTree::del(int val){
 			//inord predeccsor:
 			x=r->left;
 			while(x->right!=NULL){
-				x=x->left;
+				x=x->right;
 			}
 			r->label=x->label;
 			del(x);
@@ -188,15 +188,15 @@ void RBTree::del(Node *c){
 		}	
 		else{
 			if(g==NULL){
-				root=doubleblack(c->right,c->parent,s);
+				doubleblack(c->right,c->parent,s);
 				delete c;
 				return;
 			}
 			else{
 				if(g->left==c->parent)
-					g->left=doubleblack(c->right,c->parent,s);
+					doubleblack(c->right,c->parent,s);
 				else
-					g->right=doubleblack(c->right,c->parent,s);
+					doubleblack(c->right,c->parent,s);
 				delete c;
 				return;
 			}
@@ -252,15 +252,15 @@ void RBTree::del(Node *c){
 			else
 				x=c->left;
 			if(g==NULL){
-				root=doubleblack(x,c->parent,s);
+				doubleblack(x,c->parent,s);
 				delete c;
 				return;
 			}
 			else{
 				if(g->left==c->parent)
-					g->left=doubleblack(x,c->parent,s);
+					doubleblack(x,c->parent,s);
 				else
-					g->right=doubleblack(x,c->parent,s);
+					doubleblack(x,c->parent,s);
 				delete c;
 				return;
 			}
@@ -269,44 +269,130 @@ void RBTree::del(Node *c){
 }
 //As double black prob is coz c was black, so even u has to exist as if it 
 //does not exist, black height will not be balanced.
-Node* RBTree::doubleblack(Node *x, Node *p, Node *s){
+void RBTree::doubleblack(Node *x, Node *p, Node *s){
 	if(s->color==RED)	//case 1
 	{
 		//both children black of uncle have to exist
 		if(p->right==s){
+			p->left=x;
 			p->right=s->left;
 			s->left=p;
 			p->right->parent=p;
+			s->parent=p->parent;
+			if(p->parent!=NULL && p->parent->left==p)
+				p->parent->left=s;
+			else if(p->parent!=NULL)
+				p->parent->right=s;
+			else{
+				root=s;
+				root->color=BLACK;
+			}
 			p->parent=s;
 			s->color=BLACK;
-			s->left=doubleblack(x,p,p->right);
-			return s;
+			doubleblack(x,p,p->right);
 		}
 		else if(p->left==s){
+			p->right=x;
 			p->left=s->right;
 			s->right=p;
 			p->left->parent=p;
+			s->parent=p->parent;
+			if(p->parent!=NULL && p->parent->left==p)
+				p->parent->left=s;
+			else if(p->parent!=NULL)
+				p->parent->right=s;
+			else{
+				root=s;
+				root->color=BLACK;
+			}
 			p->parent=s;
 			s->color=BLACK;
-			s->right=doubleblack(x,p,p->left);
-			return s;
+			doubleblack(x,p,p->left);
 		}
 	}	
 	else if(s->color==BLACK){
+		if(p->left==s)
+			p->right=x;
+		else
+			p->left=x;
 		if(s->right==s->left)	//no child to sibling
 		{
 			if(x!=NULL)
 				x->color=BLACK;
 			s->color=RED;
-			if(p->color==BLACK){
-				if(grandparent(p)==NULL)
-					return doubleblack(p,p->parent,sibling(p));
-				else
-				
+			if(p->parent==NULL){
+				root=p;
+				root->color=BLACK;
+				if(x!=NULL)
+					x->color=RED;
 			}
+			else if(p->color==BLACK){
+				doubleblack(p,p->parent,sibling(p));
+			}
+			else
+				p->color=BLACK;
+		}
+		else if((s->right!=NULL && s->right->color==RED) || (s->left!=NULL && s->left->color==RED))	//case 3
+		{
+			if(x!=NULL)
+				x->color=BLACK;
+			if(p->right==s){
+				p->right=s->left;
+				s->left=p;
+				s->right->color=BLACK;
+				s->color=p->color;
+				p->color=BLACK;
+				if(p->parent==NULL){
+					root=s;
+					root->color=BLACK;
+					root->parent=NULL;
+				}
+				else if(p->parent->left==p){
+					p->parent->left=s;
+					s->parent=p->parent;
+				}
+				else{
+					p->parent->right=s;
+					s->parent=p->parent;
+				}
+				p->parent=s;
+			}
+			else{
+				p->left=s->right;
+				s->right=p;
+				s->left->color=BLACK;
+				s->color=p->color;
+				p->color=BLACK;
+				if(p->parent==NULL){
+					root=s;
+					root->color=BLACK;
+					root->parent=NULL;
+				}
+				else if(p->parent->left==p){
+					p->parent->left=s;
+					s->parent=p->parent;
+				}
+				else{
+					p->parent->right=s;
+					s->parent=p->parent;
+				}
+				p->parent=s;	
+			}	
+		}
+		else	//case 2
+		{
+			if(x!=NULL)
+				x->color=BLACK;
+			s->color=RED;
+			if(p->color==BLACK && p->parent!=NULL)	
+				doubleblack(p,p->parent,sibling(p));
+			else if(p->parent==NULL)
+				return;
+			else
+				p->color=BLACK;
 		}
 	}
-	return p;
+	return;
 }
 
 /*
@@ -431,5 +517,11 @@ int main(){
 	cout<<"Over:";
 	cin>>val;
 	Rb.levelorder();
+	cout<<endl<<"enter nodes to delete:"<<endl;
+	for(int i=0;i<3;i++){
+		cin>>val;
+		Rb.del(val);
+		Rb.levelorder();
+	}
 	return 0;
 }
