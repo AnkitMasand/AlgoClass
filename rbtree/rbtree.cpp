@@ -120,6 +120,7 @@ void RBTree::insert_n(int val){
 		if(prev_gp->parent!=NULL && prev_gp->parent->right==prev_gp)
 		{
 			prev_gp=prev_gp->parent;
+			cout<<prev_gp->label<<"great gp"<<endl;
 			prev_gp->right=doublered(r);
 			cout<<prev_gp->label<<"great gp"<<endl;
 			r=prev_gp->right;
@@ -127,6 +128,7 @@ void RBTree::insert_n(int val){
 		else if(prev_gp->parent!=NULL)
 		{
 			prev_gp=prev_gp->parent;
+			cout<<prev_gp->label<<"great gp"<<endl;
 			prev_gp->left=doublered(r);
 			cout<<prev_gp->label<<"great gp"<<endl;
 			r=prev_gp->left;
@@ -460,6 +462,8 @@ Node* RBTree::doublered(Node *X){
 		else if(g->left==X->parent){
 			//ZIG ZIG
 			g->left=X->parent->right;
+			if(X->parent->right!=NULL)
+				X->parent->right->parent=g;
 			X->parent->parent=g->parent;
 			X->parent->right=g;
 			g->parent=X->parent;
@@ -470,6 +474,8 @@ Node* RBTree::doublered(Node *X){
 		else if(g->right==X->parent){
 			//ZIG ZIG
 			g->right=X->parent->left;
+			if(X->parent->left!=NULL)
+				X->parent->left->parent=g;
 			X->parent->parent=g->parent;
 			X->parent->left=g;
 			g->parent=X->parent;
@@ -499,8 +505,11 @@ int main(){
 	int val;
 	for(int i=0;i<n;i++)
 	{
+		cout<<endl<<"node:";
 		cin>>val;
 		Rb.insert_n(val);
+		cout<<"levelord:";
+		Rb.levelorder();
 	}
 	cout<<"Over:";
 	cin>>val;
