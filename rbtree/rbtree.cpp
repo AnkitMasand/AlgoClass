@@ -26,6 +26,7 @@ class RBTree{
 	RBTree(){
 		root=NULL;
 	}
+	void search(int);
 	Node* insert(Node*,int);
 	Node* grandparent(Node *c);
 	Node* sibling(Node *c);
@@ -38,6 +39,27 @@ class RBTree{
 	void del(Node*);
 	void doubleblack(Node*,Node*,Node*);
 };
+
+void RBTree::search(int val){
+	Node *r=root;
+	while(r!=NULL){
+		if(r->label > val){
+			r=r->left;
+		}
+		else if(r->label < val){
+			r=r->right;
+		}
+		else{
+			break;	
+		}
+	}
+	if(r==NULL){
+		cout<<"Element not found!"<<endl;
+		return;
+	}
+	else
+		cout<<"element present!"<<endl;
+}
 
 void RBTree::levelorder(){
 	queue<Node*> nodes;
@@ -523,5 +545,8 @@ int main(){
 		Rb.del(val);
 		Rb.levelorder();
 	}
+	cout<<"Search key:"<<endl;
+	cin>>val;
+	Rb.search(val);
 	return 0;
 }
