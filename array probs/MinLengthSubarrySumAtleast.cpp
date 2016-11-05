@@ -13,11 +13,10 @@ int main(){
 	int max_sum;
 	cout<<"sum atleast s";
 	cin>>max_sum;
-	int sum=0,minlen=999;
-	int i=0;
+	int sum=0,minlen=len;
 	int l=0,r=0;
-	while(i<len){
-		sum+=nos[i++];
+	while(r<len){
+		sum+=nos[r];
 		if(sum>max_sum){
 			if(minlen>(r-l))
 				minlen=(r-l);
