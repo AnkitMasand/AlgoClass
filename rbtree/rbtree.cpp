@@ -311,6 +311,7 @@ void RBTree::doubleblack(Node *x, Node *p, Node *s){
 			}
 			p->parent=s;
 			s->color=BLACK;
+			p->color=RED;
 			doubleblack(x,p,p->right);
 		}
 		else if(p->left==s){
@@ -329,6 +330,7 @@ void RBTree::doubleblack(Node *x, Node *p, Node *s){
 			}
 			p->parent=s;
 			s->color=BLACK;
+			p->color=RED;
 			doubleblack(x,p,p->left);
 		}
 	}	
