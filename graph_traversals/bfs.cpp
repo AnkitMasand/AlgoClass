@@ -5,30 +5,38 @@ using namespace std;
 
 
 int visit(Graph &G){
-	int pi[G.no_nodes];
-	G.display();
-	queue <Node> trav;
-	cout<<G.start->getlabel()<<":"<<G.start->getadjno()<<endl;
-	trav.push(*G.start);
-	G.start.setvisited(true);
-	pi[G.start.getlabel()]=-1;
+	int pi[G.getno_of_nodes()];
+	char ch;
+	//G.display();
+	queue <Node*> trav;
+	//Node *st=G.start;
+	//Node s=*st;
+	cout<<G.NodeList[0].getlabel()<<endl;
+	trav.push(&G.NodeList[0]);
+	//G.NodeList[0].setvisited(true);
+	pi[G.NodeList[0].getlabel()]=-1;
 	while(!trav.empty()){
-		Node u=trav.front();
-		cout<<trav.front().getlabel()<<":"<<trav.front().getadjno()<<endl;
+		Node *u=trav.front();
+		//cout<<trav.front().getlabel()<<":"<<trav.front().getadjno()<<endl;
 		trav.pop();
-		cout<<u.getlabel()<<" :-"<<u.getadjno()<<endl;
-		for(int i=0;i<u.getadjno();i++){
-			if(G.list[u.adj[i]].getvisited()==false){
-				trav.push(G.list[u.adj[i]]);
-				pi[G.list[u.adj[i]].getlabel()]=u.getlabel();
+		if(!u->getvisited()){
+		u->setvisited(true);
+		//cout<<u->getlabel()<<" :-"<<G.adjList[u->getlabel()].size()<<endl;
+		for(int i=0;i<G.adjList[u->getlabel()].size();i++){
+			//cout<<G.adjList[u->getlabel()][i]->getlabel()<<endl;
+			if(!G.adjList[u->getlabel()][i]->getvisited()){
+				trav.push(G.adjList[u->getlabel()][i]);
+				pi[G.adjList[u->getlabel()][i]->getlabel()]=u->getlabel();
 			}
 		}
-		cout<<u.getlabel()<<" ";
+		cout<<u->getlabel()<<" ";
+		//cin>>ch;
+		}
 	}
 }
 
 int main(){
-	Graph G(5);
+	Graph G;
 	G.construct();
 	G.display();
 	visit(G);
