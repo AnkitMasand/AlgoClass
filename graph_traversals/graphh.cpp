@@ -7,6 +7,7 @@ class Node{
 	int no_of_adj;
 	bool visited;
    public:
+	int prio;
 	Node(int l);
 	Node();
 	int getlabel();
@@ -14,15 +15,21 @@ class Node{
 	void setvisited(bool);
 	bool getvisited();
 };
+typedef struct Adj{
+	Node* n;
+	int weight;
+};
 Node::Node(int l){
 	label=l;
 	visited=false;
 	no_of_adj=0;
+	prio=999;
 }
 Node::Node(){
 	label=0;
 	visited=false;
 	no_of_adj=0;
+	prio=999;
 }
 int Node::getlabel(){
 	return label;
@@ -37,10 +44,14 @@ bool Node::getvisited(){
 	return visited;
 };
 
+bool comp(const Node *l, const Node *r) {
+                return l->prio > r->prio;
+        }
+
 class Graph{
    public:
 	vector<Node> NodeList;
-	vector< vector<Node*> > adjList;
+	vector< vector<Adj> > adjList;
 	void construct();
 	void display();
 	int getno_of_nodes();
@@ -51,7 +62,7 @@ int Graph::getno_of_nodes(){
 }
 
 void Graph::construct(){
-	int l,n,c;
+	int l,n,c,w;
 	cout<<"Enter number of nodes:";
 	cin>>n;
 	for(int i=0;i<n;i++){
@@ -64,13 +75,15 @@ void Graph::construct(){
 	{
 		cout<<"Number of nodes adjacent to "<<i;
 		cin>>c;
-		adjList.push_back(vector<Node*>());
+		adjList.push_back(vector<Adj>());
 		for(int j=0;j<c;j++){
 			cin>>l;
+			cin>>w;
 			cout<<NodeList[l].getlabel()<<",";
 			Node *t=&NodeList[l];
 			cout<<t->getlabel()<<" ";
-			adjList[i].push_back(&NodeList[l]);
+			Adj a={t,w};
+			adjList[i].push_back(a);
 		}
 	}
 }
@@ -80,7 +93,7 @@ void Graph::display(){
 	{
 		cout<<NodeList[i].getlabel()<<":";
 		for(int j=0;j<adjList[i].size();j++){
-			cout<<adjList[i][j]->getlabel()<<" ";
+			cout<<adjList[i][j].n->getlabel()<<" ";
 		}
 		cout<<endl;
 	}

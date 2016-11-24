@@ -1,5 +1,5 @@
 #include<iostream>
-#include<queue>
+#include<stack>
 #include "graph.h"
 using namespace std;
 
@@ -8,7 +8,7 @@ int visit(Graph &G){
 	int pi[G.getno_of_nodes()];
 	char ch;
 	//G.display();
-	queue <Node*> trav;
+	stack <Node*> trav;
 	//Node *st=G.start;
 	//Node s=*st;
 	cout<<G.NodeList[0].getlabel()<<endl;
@@ -16,7 +16,7 @@ int visit(Graph &G){
 	//G.NodeList[0].setvisited(true);
 	pi[G.NodeList[0].getlabel()]=-1;
 	while(!trav.empty()){
-		Node *u=trav.front();
+		Node *u=trav.top();
 		//cout<<trav.front().getlabel()<<":"<<trav.front().getadjno()<<endl;
 		trav.pop();
 		if(!u->getvisited()){

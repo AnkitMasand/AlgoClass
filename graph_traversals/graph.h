@@ -8,6 +8,7 @@ class Node{
 	int no_of_adj;
 	bool visited;
    public:
+	int prio;
 	Node(int l);
 	Node();
 	int getlabel();
@@ -15,10 +16,24 @@ class Node{
 	void setvisited(bool);
 	bool getvisited();
 };
+
+typedef struct Adj{
+        Node* n;
+        int weight;
+};
+
+bool comp(const Node *l, const Node *r);
+
+typedef struct GreaterThanPrio{
+        bool operator()(const Node *l, const Node *r) const{
+                return l->prio > r->prio;
+        }
+};
+
 class Graph{
    public:
 	vector<Node> NodeList;
-	vector< vector<Node*> > adjList;
+	vector< vector<Adj> > adjList;
 	void construct();
 	void display();
 	int getno_of_nodes();
